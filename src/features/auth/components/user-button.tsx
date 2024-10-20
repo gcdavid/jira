@@ -68,6 +68,7 @@ export const UserButton = () => {
           onClick={() => logout()}
         >
           <LogOut className="size-4 mr-2" />
+          Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
