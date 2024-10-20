@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import React from "react";
 import Link from "next/link";
+import { QueryProvider } from "@/components/query-provider";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -12,10 +13,10 @@ interface AuthLayoutProps {
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   const pathName = usePathname();
-  const isSignIn = usePathname() == "/sign-in";
+  const isSignIn = pathName == "/sign-in";
   return (
     <main className="bg-neutral-100 min-h-screen">
-      <div className="mx-auto max-w-screen-2xl p-4">
+      <div className="mx-auto border max-w-screen-2xl p-4">
         <nav className="flex justify-between items-center">
           <Image src="/logo.svg" alt="Logo" height={56} width={152} />
 
@@ -25,9 +26,9 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             </Link>
           </Button>
         </nav>
-        <div>
-          <div className="flex flex-col items-center justify-center pt-4 md:pt-14"></div>
-          {children}
+
+        <div className="flex flex-col items-center justify-center pt-4 md:pt-14">
+          <QueryProvider>{children}</QueryProvider>
         </div>
       </div>
     </main>
