@@ -12,8 +12,9 @@ import { sessionMiddleware } from "@/lib/session-middleware";
 //next is a reserved parameter for the next middleware in the chain.
 //Zvalidator is also one type of middleware that can be used in the route.
 const app = new Hono()
-  .get("/current", sessionMiddleware, async (c) => {
+  .get("/current", sessionMiddleware, (c) => {
     const user = c.get("user");
+
     return c.json({ data: user });
   })
   .post("/login", zValidator("json", loginSchema), async (c) => {
