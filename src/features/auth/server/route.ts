@@ -6,11 +6,16 @@ import { loginSchema, registerSchema } from "../schemas";
 import { createAdminClient } from "@/lib/appwrite";
 import { ID } from "node-appwrite";
 import { AUTH_COOKIE } from "../constants";
+import { sessionMiddleware } from "@/lib/session-middleware";
 
 //there can be multiple middlewares in a route before the final handler.
 //next is a reserved parameter for the next middleware in the chain.
 //Zvalidator is also one type of middleware that can be used in the route.
 const app = new Hono()
+  .get("/current", sessionMiddleware, async (c) => {
+    const user = c.get("user");
+    return c.json({ data: user });
+  })
   .post("/login", zValidator("json", loginSchema), async (c) => {
     const { email, password } = c.req.valid("json");
 
@@ -45,8 +50,11 @@ const app = new Hono()
 
     return c.json({ success: true });
   })
-  .post("/logout", async (c) => {
+  .post("/logout", sessionMiddleware, async (c) => {
+    const account = c.get("account");
+
     deleteCookie(c, AUTH_COOKIE);
+    await account.deleteSession("current");
 
     return c.json({ success: true });
   });
