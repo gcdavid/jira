@@ -13,7 +13,7 @@ export const getCurrent = async () => {
     const session = await cookies().get(AUTH_COOKIE);
 
     if (!session) {
-      return null;
+      return { documents: [], total: 0 };
     }
 
     client.setSession(session.value);
@@ -22,6 +22,6 @@ export const getCurrent = async () => {
 
     return await account.get();
   } catch {
-    return null;
+    return { documents: [], total: 0 };
   }
 };
