@@ -24,9 +24,11 @@ import Link from "next/link";
 import { loginSchema } from "../schemas";
 import { useLogin } from "../api/use-login";
 import { useCurrent } from "../api/use-current";
+import { useRouter } from "next/navigation";
 
 export const SignInCard = () => {
   const { mutate, isPending } = useLogin();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     defaultValues: {
@@ -37,7 +39,15 @@ export const SignInCard = () => {
   });
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    mutate({ json: values });
+    mutate(
+      { json: values },
+      {
+        onSuccess: () => {
+          console.log("fuck");
+          router.push("/");
+        },
+      }
+    );
   };
 
   return (

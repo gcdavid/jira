@@ -11,6 +11,6 @@ export const getCurrent = async () => {
 
     return await account.get();
   } catch {
-    return { documents: [], total: 0 };
+    return null;
   }
 };
